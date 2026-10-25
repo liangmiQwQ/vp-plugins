@@ -1,0 +1,45 @@
+{
+  "name": "vp-plugins",
+  "version": "0.0.0",
+  "description": "One plugin for all.",
+  "homepage": "https://github.com/liangmiQwQ/vp-plugins#readme",
+  "bugs": {
+    "url": "https://github.com/liangmiQwQ/vp-plugins/issues"
+  },
+  "license": "MIT",
+  "author": "Liang Mi <hi@liangmi.dev>",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/liangmiQwQ/vp-plugins.git"
+  },
+  "files": [
+    "dist"
+  ],
+  "type": "module",
+  "exports": {
+    ".": "./dist/index.mjs",
+    "./package.json": "./package.json"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "build": "vp run cpack",
+    "check": "vp run ccheck",
+    "dev": "vp pack --watch",
+    "prepare": "vp config",
+    "prepublishOnly": "vp run build",
+    "release": "bumpp",
+    "test": "vp run ctest"
+  },
+  "devDependencies": {
+    "@liangmi/vp-config": "catalog:",
+    "@types/node": "catalog:",
+    "@typescript/native-preview": "catalog:",
+    "bumpp": "catalog:",
+    "typescript": "catalog:",
+    "vite": "catalog:",
+    "vite-plus": "catalog:"
+  },
+  "packageManager": "pnpm@12.15.0"
+}
