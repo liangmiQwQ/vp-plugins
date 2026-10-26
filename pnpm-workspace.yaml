@@ -1,3 +1,6 @@
+packages:
+  - packages/*
+
 catalog:
   '@liangmi/vp-config': '1.0.0'
   '@types/node': '26.6.5'

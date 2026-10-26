@@ -1,3 +1,3 @@
-export function vpPlugins(): never {
+export function vpPlugin(): never {
   throw new Error('Not implemented yet')
 }

@@ -1,0 +1,34 @@
+{
+  "name": "vp-plugin",
+  "version": "0.0.0",
+  "description": "One plugin for all.",
+  "homepage": "https://github.com/liangmiQwQ/vp-plugin#readme",
+  "bugs": {
+    "url": "https://github.com/liangmiQwQ/vp-plugin/issues"
+  },
+  "license": "MIT",
+  "author": "Liang Mi <hi@liangmi.dev>",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/liangmiQwQ/vp-plugin.git",
+    "directory": "packages/vp-plugin"
+  },
+  "files": [
+    "dist"
+  ],
+  "type": "module",
+  "exports": {
+    ".": "./dist/index.mjs",
+    "./package.json": "./package.json"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "build": "vp run cpack",
+    "check": "vp run ccheck",
+    "dev": "vp pack --watch",
+    "prepublishOnly": "vp run build",
+    "test": "vp run ctest"
+  }
+}

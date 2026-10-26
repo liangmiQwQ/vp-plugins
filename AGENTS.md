@@ -1,10 +1,16 @@
-# vp-plugins Agent Guide
+# vp-plugin Agent Guide
 
-vp-plugins — One plugin for all.
+vp-plugin — One plugin for all.
 
 ## Toolchain
 
 Vite+ is used as the project manager and dev toolchain for JavaScript part. Check `node_modules/vite-plus/docs` if you don't know how to use Vite+ features. When you find yourself needing a dev tool a tool is missing, you can check Vite+'s document first.
+
+## Project Layout
+
+The library lives in `packages/vp-plugin`. The root manages shared tooling and dependency versions.
+
+Vite+ reads lint and formatting settings only from the root `vite.config.ts`; package configs set build and test options.
 
 ## Rules
 

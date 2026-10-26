@@ -1,36 +1,25 @@
 {
-  "name": "vp-plugins",
+  "name": "vp-plugin-monorepo",
   "version": "0.0.0",
+  "private": true,
   "description": "One plugin for all.",
-  "homepage": "https://github.com/liangmiQwQ/vp-plugins#readme",
+  "homepage": "https://github.com/liangmiQwQ/vp-plugin#readme",
   "bugs": {
-    "url": "https://github.com/liangmiQwQ/vp-plugins/issues"
+    "url": "https://github.com/liangmiQwQ/vp-plugin/issues"
   },
   "license": "MIT",
   "author": "Liang Mi <hi@liangmi.dev>",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/liangmiQwQ/vp-plugins.git"
+    "url": "git+https://github.com/liangmiQwQ/vp-plugin.git"
   },
-  "files": [
-    "dist"
-  ],
   "type": "module",
-  "exports": {
-    ".": "./dist/index.mjs",
-    "./package.json": "./package.json"
-  },
-  "publishConfig": {
-    "access": "public"
-  },
   "scripts": {
-    "build": "vp run cpack",
+    "build": "vp run -r build",
     "check": "vp run ccheck",
-    "dev": "vp pack --watch",
     "prepare": "vp config",
-    "prepublishOnly": "vp run build",
-    "release": "bumpp",
-    "test": "vp run ctest"
+    "release": "bumpp -r",
+    "test": "vp run -r test"
   },
   "devDependencies": {
     "@liangmi/vp-config": "catalog:",

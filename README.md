@@ -1,4 +1,4 @@
-# vp-plugins
+# vp-plugin
 
 One plugin for all.
 
