@@ -1,6 +1,6 @@
-# vp-plugin Agent Guide
+# `vp-plugin` Project Agent Guide
 
-vp-plugin — One plugin for all.
+`vp-plugin` is a community project designed to provide full range of functionalities, including linting, bundling, building through only one plugin. It is based on the united toolchain of JavaScript development: Vite+.
 
 ## Toolchain
 
@@ -8,9 +8,10 @@ Vite+ is used as the project manager and dev toolchain for JavaScript part. Chec
 
 ## Project Layout
 
-The library lives in `packages/vp-plugin`. The root manages shared tooling and dependency versions.
+The project includes two parts:
 
-Vite+ reads lint and formatting settings only from the root `vite.config.ts`; package configs set build and test options.
+- `packages/kit` is the library for plugin authors. It's mainly a tsdown (`vp pack`) plugin includes several macros.
+- `examples/*` is some pre-made plugins. Only `react` is maintained by `vp-plugin` team for now. Considering Oxlint's wip template linting.
 
 ## Rules
 
