@@ -215,6 +215,21 @@ importers:
         specifier: 'catalog:'
         version: 1.4.0(@types/node@26.6.5)(@typescript/native-preview@7.0.0-dev.20260707.2)(@vitest/ui@5.0.5)(jiti@2.7.0)(typescript@7.0.2)(yaml@2.9.1)
 
+  examples/react:
+    devDependencies:
+      vite-plus:
+        specifier: 'catalog:'
+        version: 1.4.0(@types/node@26.6.5)(@typescript/native-preview@7.0.0-dev.20260707.2)(@vitest/ui@5.0.5)(jiti@2.7.0)(typescript@7.0.2)(yaml@2.9.1)
+      vp-plugin-kit:
+        specifier: workspace:*
+        version: link:../../packages/vp-plugin-kit
+
+  packages/vp-plugin-kit:
+    devDependencies:
+      vite-plus:
+        specifier: 'catalog:'
+        version: 1.4.0(@types/node@26.6.5)(@typescript/native-preview@7.0.0-dev.20260707.2)(@vitest/ui@5.0.5)(jiti@2.7.0)(typescript@7.0.2)(yaml@2.9.1)
+
 packages:
 
   '@babel/code-frame@7.29.7':

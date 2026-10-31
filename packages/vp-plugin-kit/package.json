@@ -1,5 +1,5 @@
 {
-  "name": "vp-plugin",
+  "name": "vp-plugin-kit",
   "version": "0.0.0",
   "description": "One plugin for all.",
   "homepage": "https://github.com/liangmiQwQ/vp-plugin#readme",
@@ -11,17 +11,21 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/liangmiQwQ/vp-plugin.git",
-    "directory": "packages/vp-plugin"
+    "directory": "packages/vp-plugin-kit"
   },
   "files": [
     "dist"
   ],
   "type": "module",
   "exports": {
-    ".": "./dist/index.mjs",
+    ".": "./src/index.ts",
     "./package.json": "./package.json"
   },
   "publishConfig": {
+    "exports": {
+      ".": "./dist/index.mjs",
+      "./package.json": "./package.json"
+    },
     "access": "public"
   },
   "scripts": {
@@ -30,5 +34,11 @@
     "dev": "vp pack --watch",
     "prepublishOnly": "vp run build",
     "test": "vp run ctest"
+  },
+  "devDependencies": {
+    "vite-plus": "catalog:"
+  },
+  "peerDependencies": {
+    "vite-plus": ">=1.0.0"
   }
 }
