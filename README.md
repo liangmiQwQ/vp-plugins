@@ -2,6 +2,8 @@
 
 `vp-plugin` is a community project designed to provide full range of functionalities, including linting, bundling, building through **a single plugin** with [Vite+](https://viteplus.dev/).
 
+## Highlights
+
 - **One for All**: You no longer need choose lint, format, dev plugin one by one. One plugin can make everything work.
 - **Lazy loading**: Each command only loads their needed plugins.
 - **Dependencies Overrides**: All code shares the same tool instance, brings better ecosystem compatibility.
