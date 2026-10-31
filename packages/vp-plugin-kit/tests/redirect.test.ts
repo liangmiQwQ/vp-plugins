@@ -5,9 +5,9 @@ import { dirname, join } from 'node:path'
 import { build } from 'vite-plus/pack'
 import { expect, it } from 'vite-plus/test'
 
-import { resolveOption } from '../src/option.ts'
-import { redirectPlugin } from '../src/redirect.ts'
-import type { PluginKitOption } from '../src/types.ts'
+import { resolveOption } from '../src/plugin/option.ts'
+import { redirectPlugin } from '../src/plugin/redirect.ts'
+import type { PluginKitOption } from '../src/plugin/types.ts'
 
 it('redirects tools bundled by Vite+ to vite-plus imports', async () => {
   const output = await pack({

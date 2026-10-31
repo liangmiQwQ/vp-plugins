@@ -9,8 +9,8 @@ export type VitePluginMode = 'eager' | 'lazy'
 type RedirectSource = (typeof VITE_PLUS_REDIRECTS)[number][0]
 
 export interface PluginKitOption {
-  /** Default: `false` */
-  allowDirectPluginImports?: boolean
+  /** Deny direct imports of Vite plugins. Default: `true` */
+  forceLazyPlugins?: boolean
   /** How the plugin is bundled by `vp pack`. */
   bundle?: {
     /** Dependencies kept out of the bundle. Default: `[]` */
