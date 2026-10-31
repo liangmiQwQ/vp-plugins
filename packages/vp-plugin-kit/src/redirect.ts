@@ -1,7 +1,12 @@
-import type { PackUserConfig, TsdownPlugin } from 'vite-plus/pack'
+import type { TsdownPlugin } from 'vite-plus/pack'
+
+import type { ResolvedOption } from './option.ts'
+
+type BundleOption = ResolvedOption['bundle']
+type Redirect = readonly [from: string, to: string]
 
 // Longer names come first so `oxlint/plugins-dev` wins over `oxlint`.
-const VITE_PLUS_REDIRECTS: [from: string, to: string][] = [
+export const VITE_PLUS_REDIRECTS = [
   ['@oxlint/plugins', 'vite-plus/lint/plugins'],
   ['oxlint/plugins-dev', 'vite-plus/lint/plugins-dev'],
   ['oxlint', 'vite-plus/lint'],
@@ -9,24 +14,32 @@ const VITE_PLUS_REDIRECTS: [from: string, to: string][] = [
   ['tsdown', 'vite-plus/pack'],
   ['vitest', 'vite-plus/test'],
   ['vite', 'vite-plus']
-]
+] as const
 
-export function createPackConfig(config: PackUserConfig): PackUserConfig {
-  return { ...config, plugins: [config.plugins, redirectPlugin()] }
-}
-
-function redirectPlugin(): TsdownPlugin {
+export function redirectPlugin(option: BundleOption): TsdownPlugin {
+  const redirects = createRedirects(option)
   return {
     name: 'vp-plugin-kit:redirect',
     resolveId(id) {
-      const target = redirect(id)
+      // Keep redirected imports external so the plugin uses the host's `vite-plus` instead of bundling a copy.
+      const target = redirect(id, redirects)
       return target === undefined ? null : { id: target, external: true }
     }
   }
 }
 
-function redirect(id: string): string | undefined {
-  for (const [from, to] of VITE_PLUS_REDIRECTS) {
+// Disabled and excluded sources redirect to themselves, so they stay external but keep their import path.
+function createRedirects({ exclude, redirect }: BundleOption): Redirect[] {
+  const redirects = VITE_PLUS_REDIRECTS.map(([from, to]): Redirect => [
+    from,
+    redirect[from] === false ? from : to
+  ])
+  return [...redirects, ...exclude.map((dep): Redirect => [dep, dep])]
+}
+
+// Match whole path segments so `vitest` is not treated as a subpath of `vite`.
+function redirect(id: string, redirects: Redirect[]): string | undefined {
+  for (const [from, to] of redirects) {
     if (id === from) {
       return to
     }
