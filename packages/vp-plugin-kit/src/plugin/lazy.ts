@@ -4,6 +4,7 @@ import { isAbsolute, join } from 'node:path'
 
 import type { TsdownPlugin } from 'vite-plus/pack'
 
+import { DECLARATION_FILE } from './declaration.ts'
 import { VITE_PLUS_REDIRECTS } from './redirect.ts'
 
 interface PackageJson {
@@ -45,6 +46,10 @@ export function lazyPlugin(): TsdownPlugin {
     },
     // Not checking `kind` in `resolveId`: tsdown's `moduleTypes` makes rolldown also resolve `import()` as `import-statement`.
     moduleParsed({ id, importedIds }) {
+      // Declaration files only hold type imports, which never load the plugin at runtime.
+      if (DECLARATION_FILE.test(id)) {
+        return
+      }
       const plugin = importedIds.find(imported => vitePlugins.has(imported))
       if (plugin !== undefined) {
         const specifier = vitePlugins.get(plugin)
