@@ -1,5 +1,6 @@
 import type { TsdownPlugin } from 'vite-plus/pack'
 
+import { DECLARATION_FILE } from './declaration.ts'
 import type { ResolvedOption } from './option.ts'
 
 type BundleOption = ResolvedOption['bundle']
@@ -16,6 +17,9 @@ export const VITE_PLUS_REDIRECTS = [
   ['vite', 'vite-plus']
 ] as const
 
+// TypeScript prints inferred external types as inline `import("vite").Plugin`, which never goes through `resolveId`.
+const INLINE_TYPE_IMPORT = /import\((["'])([^"']+)\1\)/g
+
 export function redirectPlugin(option: BundleOption): TsdownPlugin {
   const redirects = createRedirects(option)
   return {
@@ -24,6 +28,15 @@ export function redirectPlugin(option: BundleOption): TsdownPlugin {
       // Keep redirected imports external so the plugin uses the host's `vite-plus` instead of bundling a copy.
       const target = redirect(id, redirects)
       return target === undefined ? null : { id: target, external: true }
+    },
+    renderChunk(code, chunk) {
+      if (!DECLARATION_FILE.test(chunk.fileName)) {
+        return null
+      }
+      return code.replaceAll(INLINE_TYPE_IMPORT, (match, quote: string, id: string) => {
+        const target = redirect(id, redirects)
+        return target === undefined ? match : `import(${quote}${target}${quote})`
+      })
     }
   }
 }

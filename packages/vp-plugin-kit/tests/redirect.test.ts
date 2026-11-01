@@ -1,4 +1,4 @@
-import { mkdir, mkdtemp, readFile, writeFile } from 'node:fs/promises'
+import { mkdir, mkdtemp, readFile, realpath, writeFile } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { dirname, join } from 'node:path'
 
@@ -45,11 +45,28 @@ it('keeps disabled redirects and excluded dependencies as direct imports', async
   expect(output).toContain(`from "my-dep/sub"`)
 })
 
+it('redirects inline type imports in declaration files', async () => {
+  const output = await pack(
+    {
+      'index.ts': `export const plugin = {} as import('vite').Plugin`,
+      // Declarations come from tsgo, which refuses to run without a tsconfig.
+      'tsconfig.json': JSON.stringify({ compilerOptions: { declaration: true } })
+    },
+    undefined,
+    'index.d.mts'
+  )
+
+  expect(output).toMatch(/import\(["']vite-plus["']\)\.Plugin/)
+})
+
 async function pack(
   files: Record<string, string>,
-  option?: PluginKitOption['bundle']
+  option?: PluginKitOption['bundle'],
+  output = 'index.mjs'
 ): Promise<string> {
-  const dir = await mkdtemp(join(tmpdir(), 'vp-plugin-kit-'))
+  // Resolve symlinks like macOS's `/var`, since tsgo reports declarations under the real path.
+  const tempDir = await mkdtemp(join(tmpdir(), 'vp-plugin-kit-'))
+  const dir = await realpath(tempDir)
   for (const [path, content] of Object.entries(files)) {
     await mkdir(dirname(join(dir, path)), { recursive: true })
     await writeFile(join(dir, path), content)
@@ -58,10 +75,10 @@ async function pack(
   await build({
     cwd: dir,
     entry: ['index.ts'],
-    dts: false,
+    dts: output.endsWith('.d.mts'),
     logLevel: 'silent',
     config: false,
     plugins: [redirectPlugin(resolveOption({ bundle: option }).bundle)]
   })
-  return readFile(join(dir, 'dist/index.mjs'), 'utf8')
+  return readFile(join(dir, 'dist', output), 'utf8')
 }
