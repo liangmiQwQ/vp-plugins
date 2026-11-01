@@ -1,7 +1,10 @@
-import type { Plugin } from 'vite-plus'
+import type { Options } from '@vitejs/plugin-react'
+import { defineVpPlugin } from 'vp-plugin-kit'
 
-export function react(): Plugin {
-  return {
-    name: 'vp-plugin-react'
-  }
-}
+export type ReactPluginOption = Options
+
+export const react = defineVpPlugin<ReactPluginOption>({
+  name: 'vp-plugin-react',
+  vite: () => import('./vite.ts'),
+  pack: () => import('./pack.ts')
+})
